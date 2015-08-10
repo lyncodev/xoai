@@ -14,7 +14,7 @@ import org.dspace.xoai.dataprovider.model.conditions.Condition;
  * @author Development @ Lyncode
  * @version 3.1.0
  */
-public final class ScopedFilter {
+public class ScopedFilter {
     private Condition condition;
     private Scope scope;
 
