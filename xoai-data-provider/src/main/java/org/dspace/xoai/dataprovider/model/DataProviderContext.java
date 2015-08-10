@@ -16,9 +16,9 @@ import javax.xml.transform.Transformer;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Context {
-    public static Context context () {
-        return new Context();
+public class DataProviderContext {
+    public static DataProviderContext context () {
+        return new DataProviderContext();
     }
 
     private Transformer metadataTransformer;
@@ -30,7 +30,7 @@ public class Context {
         return sets;
     }
 
-    public Context withSet(Set set) {
+    public DataProviderContext withSet(Set set) {
         if (!set.hasCondition())
             throw new InternalOAIException("Context sets must have a condition");
         this.sets.add(set);
@@ -41,7 +41,7 @@ public class Context {
         return metadataTransformer;
     }
 
-    public Context withTransformer(Transformer metadataTransformer) {
+    public DataProviderContext withTransformer(Transformer metadataTransformer) {
         this.metadataTransformer = metadataTransformer;
         return this;
     }
@@ -50,7 +50,7 @@ public class Context {
         return metadataFormats;
     }
 
-    public Context withMetadataFormat(MetadataFormat metadataFormat) {
+    public DataProviderContext withMetadataFormat(MetadataFormat metadataFormat) {
         int remove = -1;
         for (int i = 0;i<metadataFormats.size();i++)
             if (metadataFormats.get(i).getPrefix().equals(metadataFormat.getPrefix()))
@@ -65,7 +65,7 @@ public class Context {
         return condition;
     }
 
-    public Context withCondition(Condition condition) {
+    public DataProviderContext withCondition(Condition condition) {
         this.condition = condition;
         return this;
     }
@@ -106,12 +106,12 @@ public class Context {
         return isStaticSet(set);
     }
 
-    public Context withMetadataFormat(String prefix, Transformer transformer) {
+    public DataProviderContext withMetadataFormat(String prefix, Transformer transformer) {
         withMetadataFormat(new MetadataFormat().withNamespace(prefix).withPrefix(prefix).withSchemaLocation(prefix).withTransformer(transformer));
         return this;
     }
 
-    public Context withMetadataFormat(String prefix, Transformer transformer, Condition condition) {
+    public DataProviderContext withMetadataFormat(String prefix, Transformer transformer, Condition condition) {
         withMetadataFormat(
                 new MetadataFormat()
                         .withNamespace(prefix)
@@ -123,7 +123,7 @@ public class Context {
         return this;
     }
 
-    public Context withoutMetadataFormats() {
+    public DataProviderContext withoutMetadataFormats() {
         metadataFormats.clear();
         return this;
     }

@@ -12,7 +12,7 @@ import com.lyncode.builder.Builder;
 import org.dspace.xoai.dataprovider.builder.OAIRequestParametersBuilder;
 import org.dspace.xoai.dataprovider.exceptions.HandlerException;
 import org.dspace.xoai.dataprovider.exceptions.OAIException;
-import org.dspace.xoai.dataprovider.model.Context;
+import org.dspace.xoai.dataprovider.model.DataProviderContext;
 import org.dspace.xoai.dataprovider.parameters.OAICompiledRequest;
 import org.dspace.xoai.dataprovider.parameters.OAIRequest;
 import org.dspace.xoai.dataprovider.repository.Repository;
@@ -21,16 +21,16 @@ import org.dspace.xoai.xml.XmlWritable;
 
 
 public abstract class VerbHandler<T extends XmlWritable> {
-    private Context context;
+    private DataProviderContext dataProviderContext;
     private Repository repository;
 
-    public VerbHandler (Context context, Repository repository) {
-        this.context = context;
+    public VerbHandler (DataProviderContext dataProviderContext, Repository repository) {
+        this.dataProviderContext = dataProviderContext;
         this.repository = repository;
     }
 
-    public Context getContext() {
-        return context;
+    public DataProviderContext getDataProviderContext() {
+        return dataProviderContext;
     }
 
     public Repository getRepository() {

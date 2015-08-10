@@ -15,7 +15,7 @@ import org.dspace.xoai.dataprovider.exceptions.OAIException;
 import org.dspace.xoai.dataprovider.handlers.helpers.ResumptionTokenHelper;
 import org.dspace.xoai.dataprovider.handlers.helpers.SetRepositoryHelper;
 import org.dspace.xoai.dataprovider.handlers.results.ListSetsResult;
-import org.dspace.xoai.dataprovider.model.Context;
+import org.dspace.xoai.dataprovider.model.DataProviderContext;
 import org.dspace.xoai.dataprovider.model.Set;
 import org.dspace.xoai.dataprovider.parameters.OAICompiledRequest;
 import org.dspace.xoai.dataprovider.repository.Repository;
@@ -28,8 +28,8 @@ import java.util.List;
 public class ListSetsHandler extends VerbHandler<ListSets> {
     private final SetRepositoryHelper setRepositoryHelper;
 
-    public ListSetsHandler(Context context, Repository repository) {
-        super(context, repository);
+    public ListSetsHandler(DataProviderContext dataProviderContext, Repository repository) {
+        super(dataProviderContext, repository);
         this.setRepositoryHelper = new SetRepositoryHelper(getRepository().getSetRepository());
     }
 
@@ -41,7 +41,7 @@ public class ListSetsHandler extends VerbHandler<ListSets> {
             throw new DoesNotSupportSetsException();
 
         int length = getRepository().getConfiguration().getMaxListSets();
-        ListSetsResult listSetsResult = setRepositoryHelper.getSets(getContext(), getOffset(parameters), length);
+        ListSetsResult listSetsResult = setRepositoryHelper.getSets(getDataProviderContext(), getOffset(parameters), length);
         List<Set> sets = listSetsResult.getResults();
 
         if (sets.isEmpty() && parameters.getResumptionToken().isEmpty())

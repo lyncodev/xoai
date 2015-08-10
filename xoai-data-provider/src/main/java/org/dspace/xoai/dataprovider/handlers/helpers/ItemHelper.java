@@ -10,7 +10,7 @@ package org.dspace.xoai.dataprovider.handlers.helpers;
 
 import com.lyncode.xml.exceptions.XmlWriteException;
 import org.dspace.xoai.dataprovider.filter.FilterResolver;
-import org.dspace.xoai.dataprovider.model.Context;
+import org.dspace.xoai.dataprovider.model.DataProviderContext;
 import org.dspace.xoai.dataprovider.model.Item;
 import org.dspace.xoai.dataprovider.model.Set;
 import org.dspace.xoai.xml.XmlWriter;
@@ -47,9 +47,9 @@ public class ItemHelper extends ItemIdentifyHelper {
         }
     }
 
-    public List<Set> getSets(Context context, FilterResolver resolver) {
+    public List<Set> getSets(DataProviderContext dataProviderContext, FilterResolver resolver) {
         List<Set> result = new ArrayList<Set>();
-        for (Set set : context.getSets())
+        for (Set set : dataProviderContext.getSets())
             if (set.getCondition().getFilter(resolver).isItemShown(item))
                 result.add(set);
 

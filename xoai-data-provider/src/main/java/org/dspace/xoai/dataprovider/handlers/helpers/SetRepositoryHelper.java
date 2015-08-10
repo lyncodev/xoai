@@ -11,7 +11,7 @@ package org.dspace.xoai.dataprovider.handlers.helpers;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.dspace.xoai.dataprovider.handlers.results.ListSetsResult;
-import org.dspace.xoai.dataprovider.model.Context;
+import org.dspace.xoai.dataprovider.model.DataProviderContext;
 import org.dspace.xoai.dataprovider.model.Set;
 import org.dspace.xoai.dataprovider.repository.SetRepository;
 
@@ -27,9 +27,9 @@ public class SetRepositoryHelper {
         this.setRepository = setRepository;
     }
 
-    public ListSetsResult getSets(Context context, int offset, int length) {
+    public ListSetsResult getSets(DataProviderContext dataProviderContext, int offset, int length) {
         List<Set> results = new ArrayList<Set>();
-        List<Set> statics = context.getSets();
+        List<Set> statics = dataProviderContext.getSets();
         if (offset < statics.size()) {
             log.debug("Offset less than static sets size");
             if (length + offset < statics.size()) {
@@ -61,8 +61,8 @@ public class SetRepositoryHelper {
         }
     }
 
-    public boolean exists(Context context, String setSpec) {
-        List<Set> statics = context.getSets();
+    public boolean exists(DataProviderContext dataProviderContext, String setSpec) {
+        List<Set> statics = dataProviderContext.getSets();
         for (Set set : statics)
             if (set.getSpec().equals(set))
                 return true;

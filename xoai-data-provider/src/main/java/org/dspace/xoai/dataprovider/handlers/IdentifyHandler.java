@@ -14,7 +14,7 @@ import org.apache.log4j.Logger;
 import org.dspace.xoai.dataprovider.exceptions.HandlerException;
 import org.dspace.xoai.dataprovider.exceptions.InternalOAIException;
 import org.dspace.xoai.dataprovider.exceptions.OAIException;
-import org.dspace.xoai.dataprovider.model.Context;
+import org.dspace.xoai.dataprovider.model.DataProviderContext;
 import org.dspace.xoai.dataprovider.parameters.OAICompiledRequest;
 import org.dspace.xoai.dataprovider.repository.Repository;
 import org.dspace.xoai.dataprovider.repository.RepositoryConfiguration;
@@ -36,8 +36,8 @@ public class IdentifyHandler extends VerbHandler<Identify> {
     private static final String PROTOCOL_VERSION = "2.0";
     private static final String XOAI_DESC = "XOAI: OAI-PMH Java Toolkit";
 
-    public IdentifyHandler(Context context, Repository repository) {
-        super(context, repository);
+    public IdentifyHandler(DataProviderContext dataProviderContext, Repository repository) {
+        super(dataProviderContext, repository);
 
         // Static validation
         RepositoryConfiguration configuration = getRepository().getConfiguration();

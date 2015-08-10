@@ -12,7 +12,7 @@ import com.lyncode.xml.exceptions.XmlWriteException;
 import org.dspace.xoai.dataprovider.DataProvider;
 import org.dspace.xoai.dataprovider.builder.OAIRequestParametersBuilder;
 import org.dspace.xoai.dataprovider.exceptions.OAIException;
-import org.dspace.xoai.dataprovider.model.Context;
+import org.dspace.xoai.dataprovider.model.DataProviderContext;
 import org.dspace.xoai.dataprovider.repository.InMemoryItemRepository;
 import org.dspace.xoai.dataprovider.repository.InMemorySetRepository;
 import org.dspace.xoai.dataprovider.repository.Repository;
@@ -41,7 +41,7 @@ public abstract class AbstractInMemoryDataProviderTest {
     private RepositoryConfiguration repositoryConfiguration = new RepositoryConfiguration()
             .withDefaults()
             .withBaseUrl(BASE_URL);
-    private Context context = new Context().withMetadataFormat(FORMAT, identity());
+    private DataProviderContext dataProviderContext = new DataProviderContext().withMetadataFormat(FORMAT, identity());
     private Repository repository = new Repository()
             .withConfiguration(repositoryConfiguration)
             .withSetRepository(setRepository)
@@ -49,8 +49,8 @@ public abstract class AbstractInMemoryDataProviderTest {
             .withResumptionTokenFormatter(resumptionTokenFormat);
     private DataProvider dataProvider = new DataProvider(theDataProviderContext(), theDataRepository());
 
-    protected Context theDataProviderContext () {
-        return context;
+    protected DataProviderContext theDataProviderContext () {
+        return dataProviderContext;
     }
 
     protected Repository theDataRepository () {

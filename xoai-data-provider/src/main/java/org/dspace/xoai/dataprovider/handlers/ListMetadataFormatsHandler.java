@@ -13,7 +13,7 @@ import org.dspace.xoai.dataprovider.exceptions.InternalOAIException;
 import org.dspace.xoai.dataprovider.exceptions.NoMetadataFormatsException;
 import org.dspace.xoai.dataprovider.exceptions.OAIException;
 import org.dspace.xoai.dataprovider.handlers.helpers.ItemRepositoryHelper;
-import org.dspace.xoai.dataprovider.model.Context;
+import org.dspace.xoai.dataprovider.model.DataProviderContext;
 import org.dspace.xoai.dataprovider.model.Item;
 import org.dspace.xoai.dataprovider.model.MetadataFormat;
 import org.dspace.xoai.dataprovider.parameters.OAICompiledRequest;
@@ -26,13 +26,13 @@ import java.util.List;
 public class ListMetadataFormatsHandler extends VerbHandler<ListMetadataFormats> {
     private ItemRepositoryHelper itemRepositoryHelper;
 
-    public ListMetadataFormatsHandler(Context context, Repository repository) {
-        super(context, repository);
+    public ListMetadataFormatsHandler(DataProviderContext dataProviderContext, Repository repository) {
+        super(dataProviderContext, repository);
         itemRepositoryHelper = new ItemRepositoryHelper(repository.getItemRepository());
 
         // Static validation
-        if (getContext().getMetadataFormats() == null ||
-                getContext().getMetadataFormats().isEmpty())
+        if (getDataProviderContext().getMetadataFormats() == null ||
+                getDataProviderContext().getMetadataFormats().isEmpty())
             throw new InternalOAIException("The context must expose at least one metadata format");
     }
 
@@ -43,7 +43,7 @@ public class ListMetadataFormatsHandler extends VerbHandler<ListMetadataFormats>
 
         if (params.hasIdentifier()) {
             Item item = itemRepositoryHelper.getItem(params.getIdentifier());
-            List<MetadataFormat> metadataFormats = getContext().formatFor(getRepository().getFilterResolver(), item);
+            List<MetadataFormat> metadataFormats = getDataProviderContext().formatFor(getRepository().getFilterResolver(), item);
             if (metadataFormats.isEmpty())
                 throw new NoMetadataFormatsException();
             for (MetadataFormat metadataFormat : metadataFormats) {
@@ -54,7 +54,7 @@ public class ListMetadataFormatsHandler extends VerbHandler<ListMetadataFormats>
                 result.withMetadataFormat(format);
             }
         } else {
-            for (MetadataFormat metadataFormat : getContext().getMetadataFormats()) {
+            for (MetadataFormat metadataFormat : getDataProviderContext().getMetadataFormats()) {
                 org.dspace.xoai.model.oaipmh.MetadataFormat format = new org.dspace.xoai.model.oaipmh.MetadataFormat()
                         .withMetadataPrefix(metadataFormat.getPrefix())
                         .withMetadataNamespace(metadataFormat.getNamespace())

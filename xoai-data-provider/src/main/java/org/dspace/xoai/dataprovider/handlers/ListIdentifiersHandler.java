@@ -12,7 +12,7 @@ import org.dspace.xoai.dataprovider.exceptions.*;
 import org.dspace.xoai.dataprovider.handlers.helpers.ItemRepositoryHelper;
 import org.dspace.xoai.dataprovider.handlers.helpers.ResumptionTokenHelper;
 import org.dspace.xoai.dataprovider.handlers.results.ListItemIdentifiersResult;
-import org.dspace.xoai.dataprovider.model.Context;
+import org.dspace.xoai.dataprovider.model.DataProviderContext;
 import org.dspace.xoai.dataprovider.model.ItemIdentifier;
 import org.dspace.xoai.dataprovider.model.MetadataFormat;
 import org.dspace.xoai.dataprovider.model.Set;
@@ -28,8 +28,8 @@ import java.util.List;
 public class ListIdentifiersHandler extends VerbHandler<ListIdentifiers> {
     private final ItemRepositoryHelper itemRepositoryHelper;
 
-    public ListIdentifiersHandler(Context context, Repository repository) {
-        super(context, repository);
+    public ListIdentifiersHandler(DataProviderContext dataProviderContext, Repository repository) {
+        super(dataProviderContext, repository);
         this.itemRepositoryHelper = new ItemRepositoryHelper(repository.getItemRepository());
     }
 
@@ -46,36 +46,36 @@ public class ListIdentifiersHandler extends VerbHandler<ListIdentifiers> {
         ListItemIdentifiersResult listItemIdentifiersResult;
         if (!parameters.hasSet()) {
             if (parameters.hasFrom() && !parameters.hasUntil())
-                listItemIdentifiersResult = itemRepositoryHelper.getItemIdentifiers(getContext(), offset, length,
+                listItemIdentifiersResult = itemRepositoryHelper.getItemIdentifiers(getDataProviderContext(), offset, length,
                         parameters.getMetadataPrefix(), parameters.getFrom());
             else if (!parameters.hasFrom() && parameters.hasUntil())
-                listItemIdentifiersResult = itemRepositoryHelper.getItemIdentifiersUntil(getContext(), offset, length,
+                listItemIdentifiersResult = itemRepositoryHelper.getItemIdentifiersUntil(getDataProviderContext(), offset, length,
                         parameters.getMetadataPrefix(), parameters.getUntil());
             else if (parameters.hasFrom() && parameters.hasUntil())
-                listItemIdentifiersResult = itemRepositoryHelper.getItemIdentifiers(getContext(), offset, length,
+                listItemIdentifiersResult = itemRepositoryHelper.getItemIdentifiers(getDataProviderContext(), offset, length,
                         parameters.getMetadataPrefix(), parameters.getFrom(),
                         parameters.getUntil());
             else
-                listItemIdentifiersResult = itemRepositoryHelper.getItemIdentifiers(getContext(), offset, length,
+                listItemIdentifiersResult = itemRepositoryHelper.getItemIdentifiers(getDataProviderContext(), offset, length,
                         parameters.getMetadataPrefix());
         } else {
-            if (!getRepository().getSetRepository().exists(parameters.getSet()) && !getContext().hasSet(parameters.getSet()))
+            if (!getRepository().getSetRepository().exists(parameters.getSet()) && !getDataProviderContext().hasSet(parameters.getSet()))
                 throw new NoMatchesException();
 
             if (parameters.hasFrom() && !parameters.hasUntil())
-                listItemIdentifiersResult = itemRepositoryHelper.getItemIdentifiers(getContext(), offset, length,
+                listItemIdentifiersResult = itemRepositoryHelper.getItemIdentifiers(getDataProviderContext(), offset, length,
                         parameters.getMetadataPrefix(), parameters.getSet(),
                         parameters.getFrom());
             else if (!parameters.hasFrom() && parameters.hasUntil())
-                listItemIdentifiersResult = itemRepositoryHelper.getItemIdentifiersUntil(getContext(), offset, length,
+                listItemIdentifiersResult = itemRepositoryHelper.getItemIdentifiersUntil(getDataProviderContext(), offset, length,
                         parameters.getMetadataPrefix(), parameters.getSet(),
                         parameters.getUntil());
             else if (parameters.hasFrom() && parameters.hasUntil())
-                listItemIdentifiersResult = itemRepositoryHelper.getItemIdentifiers(getContext(), offset, length,
+                listItemIdentifiersResult = itemRepositoryHelper.getItemIdentifiers(getDataProviderContext(), offset, length,
                         parameters.getMetadataPrefix(), parameters.getSet(),
                         parameters.getFrom(), parameters.getUntil());
             else
-                listItemIdentifiersResult = itemRepositoryHelper.getItemIdentifiers(getContext(), offset, length,
+                listItemIdentifiersResult = itemRepositoryHelper.getItemIdentifiers(getDataProviderContext(), offset, length,
                         parameters.getMetadataPrefix(), parameters.getSet());
         }
 
@@ -112,7 +112,7 @@ public class ListIdentifiersHandler extends VerbHandler<ListIdentifiers> {
                                     ItemIdentifier itemIdentifier) throws BadArgumentException,
             OAIException,
             NoMetadataFormatsException {
-        MetadataFormat format = getContext().formatForPrefix(parameters
+        MetadataFormat format = getDataProviderContext().formatForPrefix(parameters
                 .getMetadataPrefix());
         if (!itemIdentifier.isDeleted() && !canDisseminate(itemIdentifier, format))
             throw new InternalOAIException("The item repository is currently providing items which cannot be disseminated with format "+format.getPrefix());
@@ -123,7 +123,7 @@ public class ListIdentifiersHandler extends VerbHandler<ListIdentifiers> {
         if (itemIdentifier.isDeleted())
             header.withStatus(Header.Status.DELETED);
 
-        for (Set set : getContext().getSets())
+        for (Set set : getDataProviderContext().getSets())
             if (set.getCondition().getFilter(getRepository().getFilterResolver()).isItemShown(itemIdentifier))
                 header.withSetSpec(set.getSpec());
 

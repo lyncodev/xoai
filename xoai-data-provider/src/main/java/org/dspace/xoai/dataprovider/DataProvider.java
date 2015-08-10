@@ -12,7 +12,7 @@ import com.lyncode.builder.Builder;
 import org.apache.log4j.Logger;
 import org.dspace.xoai.dataprovider.exceptions.*;
 import org.dspace.xoai.dataprovider.handlers.*;
-import org.dspace.xoai.dataprovider.model.Context;
+import org.dspace.xoai.dataprovider.model.DataProviderContext;
 import org.dspace.xoai.dataprovider.parameters.OAICompiledRequest;
 import org.dspace.xoai.dataprovider.parameters.OAIRequest;
 import org.dspace.xoai.dataprovider.repository.Repository;
@@ -27,8 +27,8 @@ import static org.dspace.xoai.dataprovider.parameters.OAIRequest.Parameter.*;
 public class DataProvider {
     private static Logger log = Logger.getLogger(DataProvider.class);
 
-    public static DataProvider dataProvider (Context context, Repository repository) {
-        return new DataProvider(context, repository);
+    public static DataProvider dataProvider (DataProviderContext dataProviderContext, Repository repository) {
+        return new DataProvider(dataProviderContext, repository);
     }
 
     private Repository repository;
@@ -42,16 +42,16 @@ public class DataProvider {
     private final ListMetadataFormatsHandler listMetadataFormatsHandler;
     private final ErrorHandler errorsHandler;
 
-    public DataProvider (Context context, Repository repository) {
+    public DataProvider (DataProviderContext dataProviderContext, Repository repository) {
         this.repository = repository;
         this.dateProvider = new UTCDateProvider();
 
-        this.identifyHandler = new IdentifyHandler(context, repository);
-        this.listSetsHandler = new ListSetsHandler(context, repository);
-        this.listMetadataFormatsHandler = new ListMetadataFormatsHandler(context, repository);
-        this.listRecordsHandler = new ListRecordsHandler(context, repository);
-        this.listIdentifiersHandler = new ListIdentifiersHandler(context, repository);
-        this.getRecordHandler = new GetRecordHandler(context, repository);
+        this.identifyHandler = new IdentifyHandler(dataProviderContext, repository);
+        this.listSetsHandler = new ListSetsHandler(dataProviderContext, repository);
+        this.listMetadataFormatsHandler = new ListMetadataFormatsHandler(dataProviderContext, repository);
+        this.listRecordsHandler = new ListRecordsHandler(dataProviderContext, repository);
+        this.listIdentifiersHandler = new ListIdentifiersHandler(dataProviderContext, repository);
+        this.getRecordHandler = new GetRecordHandler(dataProviderContext, repository);
         this.errorsHandler = new ErrorHandler();
     }
 

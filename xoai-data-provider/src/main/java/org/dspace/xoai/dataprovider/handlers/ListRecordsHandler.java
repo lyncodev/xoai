@@ -16,7 +16,7 @@ import org.dspace.xoai.dataprovider.handlers.helpers.ItemRepositoryHelper;
 import org.dspace.xoai.dataprovider.handlers.helpers.ResumptionTokenHelper;
 import org.dspace.xoai.dataprovider.handlers.helpers.SetRepositoryHelper;
 import org.dspace.xoai.dataprovider.handlers.results.ListItemsResults;
-import org.dspace.xoai.dataprovider.model.Context;
+import org.dspace.xoai.dataprovider.model.DataProviderContext;
 import org.dspace.xoai.dataprovider.model.Item;
 import org.dspace.xoai.dataprovider.model.MetadataFormat;
 import org.dspace.xoai.dataprovider.model.Set;
@@ -39,8 +39,8 @@ public class ListRecordsHandler extends VerbHandler<ListRecords> {
     private final ItemRepositoryHelper itemRepositoryHelper;
     private final SetRepositoryHelper setRepositoryHelper;
 
-    public ListRecordsHandler(Context context, Repository repository) {
-        super(context, repository);
+    public ListRecordsHandler(DataProviderContext dataProviderContext, Repository repository) {
+        super(dataProviderContext, repository);
         this.itemRepositoryHelper = new ItemRepositoryHelper(getRepository().getItemRepository());
         this.setRepositoryHelper = new SetRepositoryHelper(getRepository().getSetRepository());
     }
@@ -57,38 +57,38 @@ public class ListRecordsHandler extends VerbHandler<ListRecords> {
         ListItemsResults result;
         if (!parameters.hasSet()) {
             if (parameters.hasFrom() && !parameters.hasUntil())
-                result = itemRepositoryHelper.getItems(getContext(), offset,
+                result = itemRepositoryHelper.getItems(getDataProviderContext(), offset,
                         length, parameters.getMetadataPrefix(),
                         parameters.getFrom());
             else if (!parameters.hasFrom() && parameters.hasUntil())
-                result = itemRepositoryHelper.getItemsUntil(getContext(), offset,
+                result = itemRepositoryHelper.getItemsUntil(getDataProviderContext(), offset,
                         length, parameters.getMetadataPrefix(),
                         parameters.getUntil());
             else if (parameters.hasFrom() && parameters.hasUntil())
-                result = itemRepositoryHelper.getItems(getContext(), offset,
+                result = itemRepositoryHelper.getItems(getDataProviderContext(), offset,
                         length, parameters.getMetadataPrefix(),
                         parameters.getFrom(), parameters.getUntil());
             else
-                result = itemRepositoryHelper.getItems(getContext(), offset,
+                result = itemRepositoryHelper.getItems(getDataProviderContext(), offset,
                         length, parameters.getMetadataPrefix());
         } else {
-            if (!setRepositoryHelper.exists(getContext(), parameters.getSet()))
+            if (!setRepositoryHelper.exists(getDataProviderContext(), parameters.getSet()))
                 throw new NoMatchesException();
             if (parameters.hasFrom() && !parameters.hasUntil())
-                result = itemRepositoryHelper.getItems(getContext(), offset,
+                result = itemRepositoryHelper.getItems(getDataProviderContext(), offset,
                         length, parameters.getMetadataPrefix(),
                         parameters.getSet(), parameters.getFrom());
             else if (!parameters.hasFrom() && parameters.hasUntil())
-                result = itemRepositoryHelper.getItemsUntil(getContext(), offset,
+                result = itemRepositoryHelper.getItemsUntil(getDataProviderContext(), offset,
                         length, parameters.getMetadataPrefix(),
                         parameters.getSet(), parameters.getUntil());
             else if (parameters.hasFrom() && parameters.hasUntil())
-                result = itemRepositoryHelper.getItems(getContext(), offset,
+                result = itemRepositoryHelper.getItems(getDataProviderContext(), offset,
                         length, parameters.getMetadataPrefix(),
                         parameters.getSet(), parameters.getFrom(),
                         parameters.getUntil());
             else
-                result = itemRepositoryHelper.getItems(getContext(), offset,
+                result = itemRepositoryHelper.getItems(getDataProviderContext(), offset,
                         length, parameters.getMetadataPrefix(),
                         parameters.getSet());
         }
@@ -127,7 +127,7 @@ public class ListRecordsHandler extends VerbHandler<ListRecords> {
     private Record createRecord(OAICompiledRequest parameters, Item item)
             throws BadArgumentException, CannotDisseminateRecordException,
             OAIException, NoMetadataFormatsException, CannotDisseminateFormatException {
-        MetadataFormat format = getContext().formatForPrefix(parameters.getMetadataPrefix());
+        MetadataFormat format = getDataProviderContext().formatForPrefix(parameters.getMetadataPrefix());
         Header header = new Header();
         Record record = new Record().withHeader(header);
         header.withIdentifier(item.getIdentifier());
@@ -135,7 +135,7 @@ public class ListRecordsHandler extends VerbHandler<ListRecords> {
         ItemHelper itemHelperWrap = new ItemHelper(item);
 
         header.withDatestamp(item.getDatestamp());
-        for (Set set : itemHelperWrap.getSets(getContext(), getRepository().getFilterResolver()))
+        for (Set set : itemHelperWrap.getSets(getDataProviderContext(), getRepository().getFilterResolver()))
             header.withSetSpec(set.getSpec());
         if (item.isDeleted())
             header.withStatus(Header.Status.DELETED);
@@ -143,9 +143,9 @@ public class ListRecordsHandler extends VerbHandler<ListRecords> {
         if (!item.isDeleted()) {
             Metadata metadata = null;
             try {
-                if (getContext().hasTransformer()) {
+                if (getDataProviderContext().hasTransformer()) {
                     metadata = new Metadata(toPipeline(item)
-                            .apply(getContext().getTransformer())
+                            .apply(getDataProviderContext().getTransformer())
                             .apply(format.getTransformer())
                             .process());
                 } else {

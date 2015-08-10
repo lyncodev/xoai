@@ -16,7 +16,7 @@ import org.dspace.xoai.dataprovider.exceptions.IllegalVerbException;
 import org.dspace.xoai.dataprovider.exceptions.UnknownParameterException;
 import org.dspace.xoai.dataprovider.filter.Filter;
 import org.dspace.xoai.dataprovider.filter.FilterResolver;
-import org.dspace.xoai.dataprovider.model.Context;
+import org.dspace.xoai.dataprovider.model.DataProviderContext;
 import org.dspace.xoai.dataprovider.model.ItemIdentifier;
 import org.dspace.xoai.dataprovider.model.conditions.Condition;
 import org.dspace.xoai.dataprovider.parameters.OAICompiledRequest;
@@ -40,7 +40,7 @@ import static org.dspace.xoai.dataprovider.model.MetadataFormat.identity;
 public abstract class AbstractHandlerTest {
 
     protected static final String EXISTING_METADATA_FORMAT = "xoai";
-    private Context context = new Context().withMetadataFormat(EXISTING_METADATA_FORMAT, identity());
+    private DataProviderContext dataProviderContext = new DataProviderContext().withMetadataFormat(EXISTING_METADATA_FORMAT, identity());
     private InMemorySetRepository setRepository = new InMemorySetRepository();
     private InMemoryItemRepository itemRepository = new InMemoryItemRepository();
     private RepositoryConfiguration repositoryConfiguration = new RepositoryConfiguration().withDefaults();
@@ -74,11 +74,11 @@ public abstract class AbstractHandlerTest {
         return new OAIRequestParametersBuilder();
     }
 
-    protected Context aContext () {
-        return context;
+    protected DataProviderContext aContext () {
+        return dataProviderContext;
     }
-    protected Context theContext () {
-        return context;
+    protected DataProviderContext theContext () {
+        return dataProviderContext;
     }
 
     protected InMemorySetRepository theSetRepository() {

@@ -15,7 +15,7 @@ import org.dspace.xoai.dataprovider.filter.Scope;
 import org.dspace.xoai.dataprovider.filter.ScopedFilter;
 import org.dspace.xoai.dataprovider.handlers.results.ListItemIdentifiersResult;
 import org.dspace.xoai.dataprovider.handlers.results.ListItemsResults;
-import org.dspace.xoai.dataprovider.model.Context;
+import org.dspace.xoai.dataprovider.model.DataProviderContext;
 import org.dspace.xoai.dataprovider.model.Item;
 import org.dspace.xoai.dataprovider.model.MetadataFormat;
 import org.dspace.xoai.dataprovider.repository.ItemRepository;
@@ -32,60 +32,60 @@ public class ItemRepositoryHelper {
         this.itemRepository = itemRepository;
     }
 
-    public ListItemIdentifiersResult getItemIdentifiers(Context context,
+    public ListItemIdentifiersResult getItemIdentifiers(DataProviderContext dataProviderContext,
                                                         int offset, int length, String metadataPrefix)
             throws CannotDisseminateFormatException, OAIException {
-        return itemRepository.getItemIdentifiers(getScopedFilters(context, metadataPrefix), offset, length);
+        return itemRepository.getItemIdentifiers(getScopedFilters(dataProviderContext, metadataPrefix), offset, length);
     }
 
-    public ListItemIdentifiersResult getItemIdentifiers(Context context,
+    public ListItemIdentifiersResult getItemIdentifiers(DataProviderContext dataProviderContext,
                                                         int offset, int length, String metadataPrefix, Date from)
             throws CannotDisseminateFormatException, OAIException {
-        List<ScopedFilter> filters = getScopedFilters(context, metadataPrefix);
+        List<ScopedFilter> filters = getScopedFilters(dataProviderContext, metadataPrefix);
         return itemRepository.getItemIdentifiers(filters, offset, length, from);
     }
 
-    private List<ScopedFilter> getScopedFilters(Context context, String metadataPrefix) throws CannotDisseminateFormatException {
+    private List<ScopedFilter> getScopedFilters(DataProviderContext dataProviderContext, String metadataPrefix) throws CannotDisseminateFormatException {
         List<ScopedFilter> filters = new ArrayList<ScopedFilter>();
-        if (context.hasCondition())
-            filters.add(new ScopedFilter(context.getCondition(), Scope.Context));
+        if (dataProviderContext.hasCondition())
+            filters.add(new ScopedFilter(dataProviderContext.getCondition(), Scope.Context));
 
-        MetadataFormat metadataFormat = context.formatForPrefix(metadataPrefix);
+        MetadataFormat metadataFormat = dataProviderContext.formatForPrefix(metadataPrefix);
         if (metadataFormat.hasCondition())
             filters.add(new ScopedFilter(metadataFormat.getCondition(), Scope.MetadataFormat));
         return filters;
     }
 
     public ListItemIdentifiersResult getItemIdentifiersUntil(
-            Context context, int offset, int length, String metadataPrefix,
+            DataProviderContext dataProviderContext, int offset, int length, String metadataPrefix,
             Date until) throws CannotDisseminateFormatException, OAIException {
-        List<ScopedFilter> filters = getScopedFilters(context, metadataPrefix);
+        List<ScopedFilter> filters = getScopedFilters(dataProviderContext, metadataPrefix);
         return itemRepository.getItemIdentifiersUntil(filters, offset, length, until);
     }
 
-    public ListItemIdentifiersResult getItemIdentifiers(Context context,
+    public ListItemIdentifiersResult getItemIdentifiers(DataProviderContext dataProviderContext,
                                                         int offset, int length, String metadataPrefix, Date from, Date until)
             throws CannotDisseminateFormatException, OAIException {
-        return itemRepository.getItemIdentifiers(getScopedFilters(context, metadataPrefix), offset, length, from, until);
+        return itemRepository.getItemIdentifiers(getScopedFilters(dataProviderContext, metadataPrefix), offset, length, from, until);
     }
 
-    public ListItemIdentifiersResult getItemIdentifiers(Context context,
+    public ListItemIdentifiersResult getItemIdentifiers(DataProviderContext dataProviderContext,
                                                         int offset, int length, String metadataPrefix, String setSpec)
             throws CannotDisseminateFormatException, OAIException {
-        List<ScopedFilter> filters = getScopedFilters(context, metadataPrefix);
-        if (context.isStaticSet(setSpec)) {
-            filters.add(new ScopedFilter(context.getSet(setSpec).getCondition(), Scope.Set));
+        List<ScopedFilter> filters = getScopedFilters(dataProviderContext, metadataPrefix);
+        if (dataProviderContext.isStaticSet(setSpec)) {
+            filters.add(new ScopedFilter(dataProviderContext.getSet(setSpec).getCondition(), Scope.Set));
             return itemRepository.getItemIdentifiers(filters, offset, length);
         } else
             return itemRepository.getItemIdentifiers(filters, offset, length, setSpec);
     }
 
-    public ListItemIdentifiersResult getItemIdentifiers(Context context,
+    public ListItemIdentifiersResult getItemIdentifiers(DataProviderContext dataProviderContext,
                                                         int offset, int length, String metadataPrefix, String setSpec,
                                                         Date from) throws CannotDisseminateFormatException, OAIException {
-        List<ScopedFilter> filters = getScopedFilters(context, metadataPrefix);
-        if (context.isStaticSet(setSpec)) {
-            filters.add(new ScopedFilter(context.getSet(setSpec).getCondition(), Scope.Set));
+        List<ScopedFilter> filters = getScopedFilters(dataProviderContext, metadataPrefix);
+        if (dataProviderContext.isStaticSet(setSpec)) {
+            filters.add(new ScopedFilter(dataProviderContext.getSet(setSpec).getCondition(), Scope.Set));
             return itemRepository.getItemIdentifiers(filters, offset, length, from);
         } else
             return itemRepository.getItemIdentifiers(filters, offset, length, setSpec,
@@ -93,23 +93,23 @@ public class ItemRepositoryHelper {
     }
 
     public ListItemIdentifiersResult getItemIdentifiersUntil(
-            Context context, int offset, int length, String metadataPrefix,
+            DataProviderContext dataProviderContext, int offset, int length, String metadataPrefix,
             String setSpec, Date until) throws CannotDisseminateFormatException, OAIException {
-        List<ScopedFilter> filters = getScopedFilters(context, metadataPrefix);
-        if (context.isStaticSet(setSpec)) {
-            filters.add(new ScopedFilter(context.getSet(setSpec).getCondition(), Scope.Set));
+        List<ScopedFilter> filters = getScopedFilters(dataProviderContext, metadataPrefix);
+        if (dataProviderContext.isStaticSet(setSpec)) {
+            filters.add(new ScopedFilter(dataProviderContext.getSet(setSpec).getCondition(), Scope.Set));
             return itemRepository.getItemIdentifiersUntil(filters, offset, length, until);
         } else
             return itemRepository.getItemIdentifiersUntil(filters, offset, length,
                     setSpec, until);
     }
 
-    public ListItemIdentifiersResult getItemIdentifiers(Context context,
+    public ListItemIdentifiersResult getItemIdentifiers(DataProviderContext dataProviderContext,
                                                         int offset, int length, String metadataPrefix, String setSpec,
                                                         Date from, Date until) throws CannotDisseminateFormatException, OAIException {
-        List<ScopedFilter> filters = getScopedFilters(context, metadataPrefix);
-        if (context.isStaticSet(setSpec)) {
-            filters.add(new ScopedFilter(context.getSet(setSpec).getCondition(), Scope.Set));
+        List<ScopedFilter> filters = getScopedFilters(dataProviderContext, metadataPrefix);
+        if (dataProviderContext.isStaticSet(setSpec)) {
+            filters.add(new ScopedFilter(dataProviderContext.getSet(setSpec).getCondition(), Scope.Set));
             return itemRepository
                     .getItemIdentifiers(filters, offset, length, from, until);
         } else
@@ -117,74 +117,74 @@ public class ItemRepositoryHelper {
                     from, until);
     }
 
-    public ListItemsResults getItems(Context context, int offset,
+    public ListItemsResults getItems(DataProviderContext dataProviderContext, int offset,
                                      int length, String metadataPrefix)
             throws CannotDisseminateFormatException, OAIException {
-        List<ScopedFilter> filters = getScopedFilters(context, metadataPrefix);
+        List<ScopedFilter> filters = getScopedFilters(dataProviderContext, metadataPrefix);
         return itemRepository.getItems(filters, offset, length);
     }
 
-    public ListItemsResults getItems(Context context, int offset,
+    public ListItemsResults getItems(DataProviderContext dataProviderContext, int offset,
                                      int length, String metadataPrefix, Date from)
             throws CannotDisseminateFormatException, OAIException {
-        List<ScopedFilter> filters = getScopedFilters(context, metadataPrefix);
+        List<ScopedFilter> filters = getScopedFilters(dataProviderContext, metadataPrefix);
         return itemRepository.getItems(filters, offset, length, from);
     }
 
-    public ListItemsResults getItemsUntil(Context context, int offset,
+    public ListItemsResults getItemsUntil(DataProviderContext dataProviderContext, int offset,
                                           int length, String metadataPrefix, Date until)
             throws CannotDisseminateFormatException, OAIException {
-        List<ScopedFilter> filters = getScopedFilters(context, metadataPrefix);
+        List<ScopedFilter> filters = getScopedFilters(dataProviderContext, metadataPrefix);
         return itemRepository.getItemsUntil(filters, offset, length, until);
     }
 
-    public ListItemsResults getItems(Context context, int offset,
+    public ListItemsResults getItems(DataProviderContext dataProviderContext, int offset,
                                      int length, String metadataPrefix, Date from, Date until)
             throws CannotDisseminateFormatException, OAIException {
-        List<ScopedFilter> filters = getScopedFilters(context, metadataPrefix);
+        List<ScopedFilter> filters = getScopedFilters(dataProviderContext, metadataPrefix);
         return itemRepository.getItems(filters, offset, length, from, until);
     }
 
-    public ListItemsResults getItems(Context context, int offset,
+    public ListItemsResults getItems(DataProviderContext dataProviderContext, int offset,
                                      int length, String metadataPrefix, String setSpec)
             throws CannotDisseminateFormatException, OAIException {
 
-        List<ScopedFilter> filters = getScopedFilters(context, metadataPrefix);
-        if (context.isStaticSet(setSpec)) {
-            filters.add(new ScopedFilter(context.getSet(setSpec).getCondition(), Scope.Set));
+        List<ScopedFilter> filters = getScopedFilters(dataProviderContext, metadataPrefix);
+        if (dataProviderContext.isStaticSet(setSpec)) {
+            filters.add(new ScopedFilter(dataProviderContext.getSet(setSpec).getCondition(), Scope.Set));
             return itemRepository.getItems(filters, offset, length);
         } else
             return itemRepository.getItems(filters, offset, length, setSpec);
     }
 
-    public ListItemsResults getItems(Context context, int offset,
+    public ListItemsResults getItems(DataProviderContext dataProviderContext, int offset,
                                      int length, String metadataPrefix, String setSpec, Date from)
             throws CannotDisseminateFormatException, OAIException {
-        List<ScopedFilter> filters = getScopedFilters(context, metadataPrefix);
-        if (context.isStaticSet(setSpec)) {
-            filters.add(new ScopedFilter(context.getSet(setSpec).getCondition(), Scope.Set));
+        List<ScopedFilter> filters = getScopedFilters(dataProviderContext, metadataPrefix);
+        if (dataProviderContext.isStaticSet(setSpec)) {
+            filters.add(new ScopedFilter(dataProviderContext.getSet(setSpec).getCondition(), Scope.Set));
             return itemRepository.getItems(filters, offset, length, from);
         } else
             return itemRepository.getItems(filters, offset, length, setSpec, from);
     }
 
-    public ListItemsResults getItemsUntil(Context context, int offset,
+    public ListItemsResults getItemsUntil(DataProviderContext dataProviderContext, int offset,
                                           int length, String metadataPrefix, String setSpec, Date until)
             throws CannotDisseminateFormatException, OAIException {
-        List<ScopedFilter> filters = getScopedFilters(context, metadataPrefix);
-        if (context.isStaticSet(setSpec)) {
-            filters.add(new ScopedFilter(context.getSet(setSpec).getCondition(), Scope.Set));
+        List<ScopedFilter> filters = getScopedFilters(dataProviderContext, metadataPrefix);
+        if (dataProviderContext.isStaticSet(setSpec)) {
+            filters.add(new ScopedFilter(dataProviderContext.getSet(setSpec).getCondition(), Scope.Set));
             return itemRepository.getItemsUntil(filters, offset, length, until);
         } else
             return itemRepository.getItemsUntil(filters, offset, length, setSpec, until);
     }
 
-    public ListItemsResults getItems(Context context, int offset,
+    public ListItemsResults getItems(DataProviderContext dataProviderContext, int offset,
                                      int length, String metadataPrefix, String setSpec, Date from,
                                      Date until) throws CannotDisseminateFormatException, OAIException {
-        List<ScopedFilter> filters = getScopedFilters(context, metadataPrefix);
-        if (context.isStaticSet(setSpec)) {
-            filters.add(new ScopedFilter(context.getSet(setSpec).getCondition(), Scope.Set));
+        List<ScopedFilter> filters = getScopedFilters(dataProviderContext, metadataPrefix);
+        if (dataProviderContext.isStaticSet(setSpec)) {
+            filters.add(new ScopedFilter(dataProviderContext.getSet(setSpec).getCondition(), Scope.Set));
             return itemRepository.getItems(filters, offset, length, from, until);
         } else
             return itemRepository.getItems(filters, offset, length, setSpec, from, until);

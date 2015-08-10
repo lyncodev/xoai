@@ -13,7 +13,7 @@ import org.dspace.xoai.dataprovider.exceptions.CannotDisseminateRecordException;
 import org.dspace.xoai.dataprovider.exceptions.HandlerException;
 import org.dspace.xoai.dataprovider.exceptions.IdDoesNotExistException;
 import org.dspace.xoai.dataprovider.exceptions.OAIException;
-import org.dspace.xoai.dataprovider.model.Context;
+import org.dspace.xoai.dataprovider.model.DataProviderContext;
 import org.dspace.xoai.dataprovider.model.Item;
 import org.dspace.xoai.dataprovider.model.MetadataFormat;
 import org.dspace.xoai.dataprovider.model.Set;
@@ -31,8 +31,8 @@ import java.io.IOException;
 
 
 public class GetRecordHandler extends VerbHandler<GetRecord> {
-    public GetRecordHandler(Context context, Repository repository) {
-        super(context, repository);
+    public GetRecordHandler(DataProviderContext dataProviderContext, Repository repository) {
+        super(dataProviderContext, repository);
     }
 
     @Override
@@ -41,11 +41,11 @@ public class GetRecordHandler extends VerbHandler<GetRecord> {
         Record record = new Record().withHeader(header);
         GetRecord result = new GetRecord(record);
 
-        MetadataFormat format = getContext().formatForPrefix(parameters.getMetadataPrefix());
+        MetadataFormat format = getDataProviderContext().formatForPrefix(parameters.getMetadataPrefix());
         Item item = getRepository().getItemRepository().getItem(parameters.getIdentifier());
 
-        if (getContext().hasCondition() &&
-                !getContext().getCondition().getFilter(getRepository().getFilterResolver()).isItemShown(item))
+        if (getDataProviderContext().hasCondition() &&
+                !getDataProviderContext().getCondition().getFilter(getRepository().getFilterResolver()).isItemShown(item))
             throw new IdDoesNotExistException("This context does not include this item");
 
         if (format.hasCondition() &&
@@ -56,7 +56,7 @@ public class GetRecordHandler extends VerbHandler<GetRecord> {
         header.withIdentifier(item.getIdentifier());
         header.withDatestamp(item.getDatestamp());
 
-        for (Set set : getContext().getSets())
+        for (Set set : getDataProviderContext().getSets())
             if (set.getCondition().getFilter(getRepository().getFilterResolver()).isItemShown(item))
                 header.withSetSpec(set.getSpec());
 
@@ -69,9 +69,9 @@ public class GetRecordHandler extends VerbHandler<GetRecord> {
         if (!item.isDeleted()) {
             Metadata metadata = null;
             try {
-                if (getContext().hasTransformer()) {
+                if (getDataProviderContext().hasTransformer()) {
                     metadata = new Metadata(toPipeline(item)
-                            .apply(getContext().getTransformer())
+                            .apply(getDataProviderContext().getTransformer())
                             .apply(format.getTransformer())
                             .process());
                 } else {
