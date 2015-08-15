@@ -16,136 +16,76 @@
 package org.dspace.xoai.model.oaipmh;
 
 
-import com.lyncode.xml.exceptions.XmlWriteException;
-import org.dspace.xoai.xml.XmlWritable;
-import org.dspace.xoai.xml.XmlWriter;
+import com.google.common.base.Optional;
 
-import javax.xml.stream.XMLStreamException;
 import java.util.Date;
 
-public class Request implements XmlWritable {
-
+public class Request {
     private final String baseUrl;
-    private String verbType;
-    private String identifier;
-    private String metadataPrefix;
-    private Date from;
-    private Date until;
-    private String set;
-    private String resumptionToken;
-    private String fromString;
-    private String untilString;
+    private final Optional<VerbType> verbType;
+    private final Optional<String> identifier;
+    private final Optional<String> metadataPrefix;
+    private final Optional<Date> from;
+    private final Optional<Date> until;
+    private final Optional<String> set;
+    private final Optional<String> resumptionToken;
 
-    public Request(String baseUrl) {
+    public Request(String baseUrl, Optional<VerbType> verbType, Optional<String> identifier, Optional<String> metadataPrefix, Optional<Date> from, Optional<Date> until, Optional<String> set, Optional<String> resumptionToken) {
         this.baseUrl = baseUrl;
+        this.verbType = verbType;
+        this.identifier = identifier;
+        this.metadataPrefix = metadataPrefix;
+        this.from = from;
+        this.until = until;
+        this.set = set;
+        this.resumptionToken = resumptionToken;
     }
 
     public String getBaseUrl() {
         return baseUrl;
     }
-
-    public Verb.Type getVerbType() {
-        return Verb.Type.fromValue(verbType);
-    }
-
-    public String getVerb () {
+    public Optional<VerbType> getVerb () {
         return verbType;
     }
-
-    public Request withVerbType(Verb.Type value) {
-        this.verbType = value.displayName();
-        return this;
-    }
-
-    public Request withVerbType (String verb) {
-        this.verbType = verb;
-        return this;
-    }
-
-    public String getIdentifier() {
+    public Optional<String> getIdentifier() {
         return identifier;
     }
-
-    public Request withIdentifier(String value) {
-        this.identifier = value;
-        return this;
-    }
-
-    public String getMetadataPrefix() {
+    public Optional<String> getMetadataPrefix() {
         return metadataPrefix;
     }
-
-    public Request withMetadataPrefix(String value) {
-        this.metadataPrefix = value;
-        return this;
-    }
-
-    public Date getFrom() {
+    public Optional<Date> getFrom() {
         return from;
     }
-
-    public Request withFrom(Date value) {
-        this.from = value;
-        return this;
-    }
-
-    public Date getUntil() {
+    public Optional<Date> getUntil() {
         return until;
     }
-
-    public Request withUntil(Date value) {
-        this.until = value;
-        return this;
-    }
-
-    public String getSet() {
+    public Optional<String> getSet() {
         return set;
     }
-
-    public Request withSet(String value) {
-        this.set = value;
-        return this;
-    }
-
-    public String getResumptionToken() {
+    public Optional<String> getResumptionToken() {
         return resumptionToken;
     }
 
-    public Request withResumptionToken(String value) {
-        this.resumptionToken = value;
-        return this;
-    }
-
-    public Request withFrom(String value) {
-        this.fromString = value;
-        return this;
-    }
-
-    public Request withUntil(String value) {
-        this.untilString = value;
-        return this;
-    }
-
-    @Override
-    public void write(XmlWriter writer) throws XmlWriteException {
-        try {
-            writer.writeAttribute("verb", verbType);
-            writer.writeAttribute("identifier", identifier);
-            writer.writeAttribute("metadataPrefix", metadataPrefix);
-            if (from != null)
-                writer.writeAttribute("from", from);
-            else
-                writer.writeAttribute("from", fromString);
-
-            if (until != null)
-                writer.writeAttribute("until", until);
-            else
-                writer.writeAttribute("until", untilString);
-            writer.writeAttribute("set", set);
-            writer.writeAttribute("resumptionToken", resumptionToken);
-            writer.writeCharacters(baseUrl);
-        } catch (XMLStreamException e) {
-            throw new XmlWriteException(e);
-        }
-    }
+//    @Override
+//    public void write(XmlDataProviderWriter writer) throws XmlWriteException {
+//        try {
+//            writer.writeAttribute("verb", verbType);
+//            writer.writeAttribute("identifier", identifier);
+//            writer.writeAttribute("metadataPrefix", metadataPrefix);
+//            if (from != null)
+//                writer.writeAttribute("from", from);
+//            else
+//                writer.writeAttribute("from", fromString);
+//
+//            if (until != null)
+//                writer.writeAttribute("until", until);
+//            else
+//                writer.writeAttribute("until", untilString);
+//            writer.writeAttribute("set", set);
+//            writer.writeAttribute("resumptionToken", resumptionToken);
+//            writer.writeCharacters(baseUrl);
+//        } catch (XMLStreamException e) {
+//            throw new XmlWriteException(e);
+//        }
+//    }
 }

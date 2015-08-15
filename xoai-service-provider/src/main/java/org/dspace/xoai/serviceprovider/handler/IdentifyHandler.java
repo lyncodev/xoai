@@ -15,7 +15,7 @@ import org.dspace.xoai.serviceprovider.exceptions.OAIRequestException;
 import org.dspace.xoai.serviceprovider.model.Context;
 import org.dspace.xoai.serviceprovider.parsers.IdentifyParser;
 
-import static org.dspace.xoai.model.oaipmh.Verb.Type.Identify;
+import static org.dspace.xoai.model.oaipmh.VerbType.Identify;
 import static org.dspace.xoai.serviceprovider.parameters.Parameters.parameters;
 
 public class IdentifyHandler {

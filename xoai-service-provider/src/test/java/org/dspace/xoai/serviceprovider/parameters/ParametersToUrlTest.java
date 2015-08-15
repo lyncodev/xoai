@@ -8,7 +8,7 @@
 
 package org.dspace.xoai.serviceprovider.parameters;
 
-import org.dspace.xoai.model.oaipmh.Verb.Type;
+import org.dspace.xoai.model.oaipmh.VerbType;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -24,7 +24,7 @@ public class ParametersToUrlTest {
 	private Calendar calendar;
 	@Test
 	public void toUrl(){
-		Parameters parameters = new Parameters().withVerb(Type.ListRecords);
+		Parameters parameters = new Parameters().withVerb(VerbType.ListRecords);
 		String url = parameters.toUrl(BASE_URL);
 		assertEquals(BASE_URL+"?verb=ListRecords",url);
 	}
@@ -37,7 +37,7 @@ public class ParametersToUrlTest {
 	
 	@Test
 	public void fromUntilDatesPassed(){
-		Parameters parameters = new Parameters().withVerb(Type.ListRecords);
+		Parameters parameters = new Parameters().withVerb(VerbType.ListRecords);
 		calendar.set(2011, Calendar.APRIL, 07,9,30,0);
 		Date date = calendar.getTime();
 		
@@ -49,7 +49,7 @@ public class ParametersToUrlTest {
 	
 	@Test
 	public void differentGranularityIsRespected(){
-		Parameters parameters = new Parameters().withVerb(Type.ListRecords);
+		Parameters parameters = new Parameters().withVerb(VerbType.ListRecords);
 		calendar.set(2013, Calendar.JANUARY, 9);
 		Date date = calendar.getTime();
 		

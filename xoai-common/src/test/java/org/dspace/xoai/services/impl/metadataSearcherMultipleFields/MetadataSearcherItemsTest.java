@@ -32,15 +32,15 @@ public class MetadataSearcherItemsTest {
 	@Before
 	public void setUp() {
 
-		metadata = new XOAIMetadata();
+//		metadata = new XOAIMetadata();
 
-		parentElement = new Element("dc");
-
-		subjectElement = new Element("subject");
-		subjectElement.withField(null, "Ciências da Educação");
-		subjectElement.withField("xml:lang", "pt-PT");
-
-		parentElement.withElement(subjectElement);
+//		parentElement = new Element("dc");
+//
+//		subjectElement = new Element("subject");
+//		subjectElement.withField(null, "Ciências da Educação");
+//		subjectElement.withField("xml:lang", "pt-PT");
+//
+//		parentElement.withElement(subjectElement);
 
 		metadata.getElements().add(parentElement);
 	}
@@ -67,7 +67,7 @@ public class MetadataSearcherItemsTest {
 	@Test
 	public void normalBehaviourWhenOnlyValueExists() {
 		subjectElement.getFields().clear();//resetting the fields
-		subjectElement.withField(null, "Ciências da Educação");
+//		subjectElement.withField(null, "Ciências da Educação");
 		
 		searcher = new MetadataSearcherItems(metadata);
 		
@@ -90,11 +90,11 @@ public class MetadataSearcherItemsTest {
 	@Test
 	public void findAllFindsElements() {
 		
-		subjectElement = new Element("subject");
-		subjectElement.withField(null, "English subject");
-		subjectElement.withField("xml:lang", "en-GB");
+//		subjectElement = new Element("subject");
+//		subjectElement.withField(null, "English subject");
+//		subjectElement.withField("xml:lang", "en-GB");
 
-		parentElement.withElement(subjectElement);
+//		parentElement.withElement(subjectElement);
 		
 		searcher = new MetadataSearcherItems(metadata);
 		

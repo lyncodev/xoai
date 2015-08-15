@@ -10,7 +10,7 @@ package org.dspace.xoai.serviceprovider.parameters;
 
 import org.apache.commons.lang3.StringUtils;
 import org.dspace.xoai.model.oaipmh.Granularity;
-import org.dspace.xoai.model.oaipmh.Verb;
+import org.dspace.xoai.model.oaipmh.VerbType;
 import org.dspace.xoai.services.api.DateProvider;
 import org.dspace.xoai.services.impl.UTCDateProvider;
 import org.dspace.xoai.util.URLEncoder;
@@ -28,7 +28,7 @@ public class Parameters {
         return new Parameters();
     }
 
-    private Verb.Type verb;
+    private VerbType verb;
     private String metadataPrefix;
     private String set;
     private Date from;
@@ -37,7 +37,7 @@ public class Parameters {
     private String resumptionToken;
 	private String granularity;
 
-    public Parameters withVerb(Verb.Type verb) {
+    public Parameters withVerb(VerbType verb) {
         this.verb = verb;
         return this;
     }
@@ -146,7 +146,7 @@ public class Parameters {
         return this;
     }
 
-    public Verb.Type getVerb() {
+    public VerbType getVerb() {
         return verb;
     }
 

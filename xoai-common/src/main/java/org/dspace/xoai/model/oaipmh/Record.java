@@ -15,70 +15,54 @@
 
 package org.dspace.xoai.model.oaipmh;
 
-import com.lyncode.xml.exceptions.XmlWriteException;
-import org.dspace.xoai.xml.XmlWritable;
-import org.dspace.xoai.xml.XmlWriter;
+import com.google.common.base.Optional;
 
-import javax.xml.stream.XMLStreamException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 
-public class Record implements XmlWritable {
+public class Record {
+    private final Header header;
+    private final Optional<Metadata> metadata;
+    private final Collection<About> abouts;
 
-    protected Header header;
-    protected Metadata metadata;
-    protected List<About> abouts = new ArrayList<About>();
+    public Record(Header header, Optional<Metadata> metadata, Collection<About> abouts) {
+        this.header = header;
+        this.metadata = metadata;
+        this.abouts = abouts;
+    }
 
     public Header getHeader() {
         return header;
     }
-
-    public Record withHeader(Header value) {
-        this.header = value;
-        return this;
-    }
-
-    public Metadata getMetadata() {
+    public Optional<Metadata> getMetadata() {
         return metadata;
     }
-
-    public Record withMetadata(Metadata value) {
-        this.metadata = value;
-        return this;
-    }
-
-    public Record withAbout(About itemAbout) {
-        this.abouts.add(itemAbout);
-        return this;
-    }
-
-    public List<About> getAbouts() {
+    public Collection<About> getAbouts() {
         return this.abouts;
     }
 
-    @Override
-    public void write(XmlWriter writer) throws XmlWriteException {
-        try {
-            if (this.header != null) {
-                writer.writeStartElement("header");
-                this.header.write(writer);
-                writer.writeEndElement();
-            }
-
-            if (this.metadata != null) {
-                writer.writeStartElement("metadata");
-                this.metadata.write(writer);
-                writer.writeEndElement();
-            }
-
-            for (About about : getAbouts()) {
-                writer.writeStartElement("about");
-                about.write(writer);
-                writer.writeEndElement();
-            }
-
-        } catch (XMLStreamException e) {
-            throw new XmlWriteException(e);
-        }
-    }
+//    @Override
+//    public void write(XmlDataProviderWriter writer) throws XmlWriteException {
+//        try {
+//            if (this.header != null) {
+//                writer.writeStartElement("header");
+//                this.header.write(writer);
+//                writer.writeEndElement();
+//            }
+//
+//            if (this.metadata != null) {
+//                writer.writeStartElement("metadata");
+//                this.metadata.write(writer);
+//                writer.writeEndElement();
+//            }
+//
+//            for (About about : getAbouts()) {
+//                writer.writeStartElement("about");
+//                about.write(writer);
+//                writer.writeEndElement();
+//            }
+//
+//        } catch (XMLStreamException e) {
+//            throw new XmlWriteException(e);
+//        }
+//    }
 }

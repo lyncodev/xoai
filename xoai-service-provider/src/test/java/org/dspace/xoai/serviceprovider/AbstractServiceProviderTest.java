@@ -14,12 +14,12 @@ import static org.dspace.xoai.dataprovider.model.MetadataFormat.identity;
 
 public abstract class AbstractServiceProviderTest extends AbstractInMemoryDataProviderTest {
 
-    private final Context context = new Context()
-            .withOAIClient(oaiClient())
-            .withBaseUrl(BASE_URL)
-            .withMetadataTransformer(FORMAT, identity());
-
-    protected Context theContext() {
-        return context;
-    }
+//    private final Context context = new Context()
+//            .withOAIClient(oaiClient())
+//            .withBaseUrl(BASE_URL)
+//            .withMetadataTransformer(FORMAT, identity());
+//
+//    protected Context theContext() {
+//        return context;
+//    }
 }

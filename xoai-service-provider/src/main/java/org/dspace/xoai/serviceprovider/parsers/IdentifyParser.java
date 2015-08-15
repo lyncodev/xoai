@@ -14,6 +14,7 @@ import org.dspace.xoai.model.oaipmh.DeletedRecord;
 import org.dspace.xoai.model.oaipmh.Description;
 import org.dspace.xoai.model.oaipmh.Granularity;
 import org.dspace.xoai.model.oaipmh.Identify;
+import org.dspace.xoai.model.oaipmh.builder.IdentifyBuilder;
 import org.dspace.xoai.serviceprovider.exceptions.InvalidOAIResponse;
 
 import java.io.InputStream;
@@ -38,7 +39,7 @@ public class IdentifyParser {
     @SuppressWarnings("unchecked")
 	public Identify parse () {
         try {
-            Identify identify = new Identify();
+            IdentifyBuilder identify = IdentifyBuilder.anIdentify();
             reader.next(allOf(aStartElement(), elementName(localPart(equalTo("Identify")))));
             reader.next(elementName(localPart(equalTo("repositoryName"))));
             identify.withRepositoryName(reader.next(text()).getText());
@@ -59,7 +60,7 @@ public class IdentifyParser {
             while (reader.next(aStartElement(), theEndOfDocument()).current(elementName(localPart(equalTo("compression")))))
                 identify.withCompression(reader.next(text()).getText());
             if(reader.current(theEndOfDocument())) {
-            	return identify;
+            	return identify.build();
             } else if (reader.current(elementName(localPart(equalTo("description"))))) {
             	identify.withDescription(reader.get(descriptionParser()));
 			}
@@ -67,7 +68,7 @@ public class IdentifyParser {
             while (reader.next(aStartElement(), theEndOfDocument()).current(elementName(localPart(equalTo("description")))))
             	identify.withDescription(reader.get(descriptionParser()));
             
-            return identify;
+            return identify.build();
         } catch (XmlReaderException e) {
             throw new InvalidOAIResponse(e);
         }

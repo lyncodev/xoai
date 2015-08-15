@@ -53,11 +53,11 @@ public class MetadataSearcherItems extends AbstractMetadataSearcher<MetadataItem
 		 
 		 MetadataItem newElement = new MetadataItem();
 		 for (Field field : fields) {
-			 if (field.getName() != null && !field.getName().equals(DEFAULT_FIELD)) {
-				 newElement.addProperty(field.getName(),field.getValue());
-			 }else{
-				 newElement.setValue(field.getValue());
-			 }
+//			 if (field.getName() != null && !field.getName().equals(DEFAULT_FIELD)) {
+//				 newElement.addProperty(field.getName(),field.getValue());
+//			 }else{
+//				 newElement.setValue(field.getValue());
+//			 }
 		 }
 	        index.get(name).add(newElement);
 		

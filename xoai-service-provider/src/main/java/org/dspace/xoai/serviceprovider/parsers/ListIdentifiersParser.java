@@ -18,7 +18,7 @@ import javax.xml.stream.events.XMLEvent;
 
 import static com.lyncode.xml.matchers.QNameMatchers.localPart;
 import static com.lyncode.xml.matchers.XmlEventMatchers.*;
-import static org.dspace.xoai.model.oaipmh.Error.Code.NO_RECORDS_MATCH;
+import static org.dspace.xoai.model.oaipmh.OAIPMHError.Code.NO_RECORDS_MATCH;
 import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.CoreMatchers.equalTo;
 

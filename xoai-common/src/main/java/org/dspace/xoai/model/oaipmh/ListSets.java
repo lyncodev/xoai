@@ -15,40 +15,23 @@
 
 package org.dspace.xoai.model.oaipmh;
 
-import com.lyncode.xml.exceptions.XmlWriteException;
-import org.dspace.xoai.xml.XmlWriter;
+import com.google.common.base.Optional;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class ListSets implements Verb {
-    protected List<Set> sets = new ArrayList<Set>();
-    protected ResumptionToken resumptionToken;
+public class ListSets implements OAIPMHContent {
+    private final List<Set> sets;
+    private final Optional<ResumptionToken> resumptionToken;
+
+    public ListSets(List<Set> sets, Optional<ResumptionToken> resumptionToken) {
+        this.sets = sets;
+        this.resumptionToken = resumptionToken;
+    }
 
     public List<Set> getSets() {
         return this.sets;
     }
-
-    public ResumptionToken getResumptionToken() {
+    public Optional<ResumptionToken> getResumptionToken() {
         return resumptionToken;
-    }
-
-    public ListSets withResumptionToken(ResumptionToken value) {
-        this.resumptionToken = value;
-        return this;
-    }
-
-    @Override
-    public void write(XmlWriter writer) throws XmlWriteException {
-        if (!this.sets.isEmpty())
-            for (Set set : this.sets)
-                writer.writeElement("set", set);
-
-        writer.writeElement("resumptionToken", resumptionToken);
-    }
-
-    @Override
-    public Type getType() {
-        return Type.ListSets;
     }
 }

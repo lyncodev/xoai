@@ -15,52 +15,24 @@
 
 package org.dspace.xoai.model.oaipmh;
 
-import com.lyncode.xml.exceptions.XmlWriteException;
-import org.dspace.xoai.xml.XmlWritable;
-import org.dspace.xoai.xml.XmlWriter;
+public class MetadataFormat {
+    private final String metadataPrefix;
+    private final String schema;
+    private final String metadataNamespace;
 
-
-public class MetadataFormat implements XmlWritable {
-
-    protected String metadataPrefix;
-    protected String schema;
-    protected String metadataNamespace;
+    public MetadataFormat(String metadataPrefix, String schema, String metadataNamespace) {
+        this.metadataPrefix = metadataPrefix;
+        this.schema = schema;
+        this.metadataNamespace = metadataNamespace;
+    }
 
     public String getMetadataPrefix() {
         return metadataPrefix;
     }
-
-    public MetadataFormat withMetadataPrefix(String value) {
-        this.metadataPrefix = value;
-        return this;
-    }
-
     public String getSchema() {
         return schema;
     }
-
-    public MetadataFormat withSchema(String value) {
-        this.schema = value;
-        return this;
-    }
-
     public String getMetadataNamespace() {
         return metadataNamespace;
     }
-
-    public MetadataFormat withMetadataNamespace(String value) {
-        this.metadataNamespace = value;
-        return this;
-    }
-
-    @Override
-    public void write(XmlWriter writer) throws XmlWriteException {
-        if (metadataPrefix != null)
-            writer.writeElement("metadataPrefix", metadataPrefix);
-        if (schema != null)
-            writer.writeElement("schema", schema);
-        if (metadataNamespace != null)
-            writer.writeElement("metadataNamespace", metadataNamespace);
-    }
-
 }

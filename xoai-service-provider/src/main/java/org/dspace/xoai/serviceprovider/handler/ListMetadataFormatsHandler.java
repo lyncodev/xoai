@@ -20,7 +20,7 @@ import org.dspace.xoai.serviceprovider.parsers.MetadataFormatParser;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.dspace.xoai.model.oaipmh.Verb.Type.ListMetadataFormats;
+import static org.dspace.xoai.model.oaipmh.VerbType.ListMetadataFormats;
 import static org.dspace.xoai.serviceprovider.parameters.Parameters.parameters;
 
 public class ListMetadataFormatsHandler {

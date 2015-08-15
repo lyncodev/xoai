@@ -8,75 +8,39 @@
 
 package org.dspace.xoai.model.oaipmh;
 
-import com.lyncode.xml.exceptions.XmlWriteException;
-import org.dspace.xoai.xml.XmlWritable;
-import org.dspace.xoai.xml.XmlWriter;
+import com.google.common.base.Optional;
 
-import javax.xml.stream.XMLStreamException;
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 
-public class Header implements XmlWritable {
-    protected String identifier;
-    protected Date datestamp;
-    protected List<String> setSpec = new ArrayList<String>();
-    protected Status status;
+public class Header {
+    private final String identifier;
+    private final Date datestamp;
+    private final Collection<String> setSpec;
+    private final Optional<Header.Status> status;
+
+    public Header(String identifier, Date datestamp, Collection<String> setSpec, Optional<Header.Status> status) {
+        this.identifier = identifier;
+        this.datestamp = datestamp;
+        this.setSpec = setSpec;
+        this.status = status;
+    }
 
     public String getIdentifier() {
         return identifier;
     }
-
-    public Header withIdentifier(String value) {
-        this.identifier = value;
-        return this;
-    }
-
     public Date getDatestamp() {
         return datestamp;
     }
-
-    public Header withDatestamp(Date value) {
-        this.datestamp = value;
-        return this;
-    }
-
-    public List<String> getSetSpecs() {
+    public Collection<String> getSetSpecs() {
         return this.setSpec;
     }
-
-    public Status getStatus() {
+    public Optional<Header.Status> getStatus() {
         return status;
     }
-
-    public Header withStatus(Status value) {
-        this.status = value;
-        return this;
-    }
-
-    public Header withSetSpec(String setSpec) {
-        this.setSpec.add(setSpec);
-        return this;
-    }
-
     public boolean isDeleted () {
         return this.status != null;
     }
-
-    @Override
-    public void write(XmlWriter writer) throws XmlWriteException {
-        try {
-            if (this.status != null)
-                writer.writeAttribute("status", this.status.value());
-            writer.writeElement("identifier", identifier);
-            writer.writeElement("datestamp", datestamp);
-            for (String setSpec : this.getSetSpecs())
-                writer.writeElement("setSpec", setSpec);
-        } catch (XMLStreamException e) {
-            throw new XmlWriteException(e);
-        }
-    }
-
 
     public enum Status {
         DELETED("deleted");

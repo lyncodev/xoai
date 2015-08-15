@@ -18,7 +18,7 @@ import org.dspace.xoai.serviceprovider.model.Context;
 import org.dspace.xoai.serviceprovider.parameters.GetRecordParameters;
 import org.dspace.xoai.serviceprovider.parsers.GetRecordParser;
 
-import static org.dspace.xoai.model.oaipmh.Verb.Type.GetRecord;
+import static org.dspace.xoai.model.oaipmh.VerbType.GetRecord;
 import static org.dspace.xoai.serviceprovider.parameters.Parameters.parameters;
 
 public class GetRecordHandler {

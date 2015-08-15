@@ -28,7 +28,7 @@ import java.util.List;
 
 import static com.lyncode.xml.matchers.QNameMatchers.localPart;
 import static com.lyncode.xml.matchers.XmlEventMatchers.*;
-import static org.dspace.xoai.model.oaipmh.Verb.Type.ListRecords;
+import static org.dspace.xoai.model.oaipmh.VerbType.ListRecords;
 import static org.dspace.xoai.serviceprovider.parameters.Parameters.parameters;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.core.AllOf.allOf;

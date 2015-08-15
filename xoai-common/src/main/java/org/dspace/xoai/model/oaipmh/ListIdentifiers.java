@@ -8,54 +8,48 @@
 
 package org.dspace.xoai.model.oaipmh;
 
-import com.lyncode.xml.exceptions.XmlWriteException;
-import org.dspace.xoai.xml.XmlWriter;
+import com.google.common.base.Optional;
 
-import javax.xml.stream.XMLStreamException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListIdentifiers implements Verb {
+public class ListIdentifiers implements OAIPMHContent {
 
-    protected List<Header> headers = new ArrayList<Header>();
-    protected ResumptionToken resumptionToken;
+    private final List<Header> headers;
+    private final Optional<ResumptionToken> resumptionToken;
 
-    public List<Header> getHeaders() {
-        return this.headers;
+    public ListIdentifiers(List<Header> headers, Optional<ResumptionToken> resumptionToken) {
+        this.headers = headers;
+        this.resumptionToken = resumptionToken;
     }
 
-    public ResumptionToken getResumptionToken() {
+    public List<Header> getHeaders() {
+        return headers;
+    }
+
+    public Optional<ResumptionToken> getResumptionToken() {
         return resumptionToken;
     }
 
-    public ListIdentifiers withResumptionToken(ResumptionToken value) {
-        this.resumptionToken = value;
-        return this;
-    }
+    //    @Override
+//    public void write(XmlDataProviderWriter writer) throws XmlWriteException {
+//        try {
+//            if (this.headers != null && !this.headers.isEmpty()) {
+//                for (Header header : this.headers) {
+//                    writer.writeStartElement("header");
+//                    header.write(writer);
+//                    writer.writeEndElement();
+//                }
+//            }
+//
+//            if (this.resumptionToken != null) {
+//                writer.writeStartElement("resumptionToken");
+//                this.resumptionToken.write(writer);
+//                writer.writeEndElement();
+//            }
+//        } catch (XMLStreamException e) {
+//            throw new XmlWriteException(e);
+//        }
+//    }
 
-    @Override
-    public void write(XmlWriter writer) throws XmlWriteException {
-        try {
-            if (this.headers != null && !this.headers.isEmpty()) {
-                for (Header header : this.headers) {
-                    writer.writeStartElement("header");
-                    header.write(writer);
-                    writer.writeEndElement();
-                }
-            }
-
-            if (this.resumptionToken != null) {
-                writer.writeStartElement("resumptionToken");
-                this.resumptionToken.write(writer);
-                writer.writeEndElement();
-            }
-        } catch (XMLStreamException e) {
-            throw new XmlWriteException(e);
-        }
-    }
-
-    @Override
-    public Type getType() {
-        return Type.ListIdentifiers;
-    }
 }

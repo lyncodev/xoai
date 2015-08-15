@@ -19,7 +19,7 @@ import java.io.InputStream;
 
 import static com.lyncode.xml.matchers.QNameMatchers.localPart;
 import static com.lyncode.xml.matchers.XmlEventMatchers.*;
-import static org.dspace.xoai.model.oaipmh.Error.Code.NO_METADATA_FORMATS;
+import static org.dspace.xoai.model.oaipmh.OAIPMHError.Code.NO_METADATA_FORMATS;
 import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.CoreMatchers.equalTo;
 
@@ -62,9 +62,10 @@ public class MetadataFormatParser {
     public MetadataFormat next () throws XmlReaderException {
         if (!hasNext()) throw new XmlReaderException("No more metadata elements available");
         awaitingNextInvocation = false;
-        return new MetadataFormat()
-                .withMetadataPrefix(reader.next(elementName(localPart(equalTo("metadataPrefix")))).next(text()).getText())
-                .withSchema(reader.next(elementName(localPart(equalTo("schema")))).next(text()).getText())
-                .withMetadataNamespace(reader.next(elementName(localPart(equalTo("metadataNamespace")))).next(text()).getText());
+//        return new MetadataFormat()
+//                .withMetadataPrefix(reader.next(elementName(localPart(equalTo("metadataPrefix")))).next(text()).getText())
+//                .withSchema(reader.next(elementName(localPart(equalTo("schema")))).next(text()).getText())
+//                .withMetadataNamespace(reader.next(elementName(localPart(equalTo("metadataNamespace")))).next(text()).getText());
+        return null;
     }
 }

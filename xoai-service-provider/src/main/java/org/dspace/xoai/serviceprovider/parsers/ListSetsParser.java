@@ -11,6 +11,7 @@ package org.dspace.xoai.serviceprovider.parsers;
 import com.lyncode.xml.XmlReader;
 import com.lyncode.xml.exceptions.XmlReaderException;
 import org.dspace.xoai.model.oaipmh.Set;
+import org.dspace.xoai.model.oaipmh.builder.SetBuilder;
 import org.dspace.xoai.serviceprovider.exceptions.EncapsulatedKnownException;
 import org.dspace.xoai.serviceprovider.exceptions.InvalidOAIResponse;
 import org.dspace.xoai.serviceprovider.exceptions.NoSetHierarchyException;
@@ -23,8 +24,8 @@ import java.util.List;
 
 import static com.lyncode.xml.matchers.QNameMatchers.localPart;
 import static com.lyncode.xml.matchers.XmlEventMatchers.*;
-import static org.dspace.xoai.model.oaipmh.Error.Code.NO_RECORDS_MATCH;
-import static org.dspace.xoai.model.oaipmh.Error.Code.NO_SET_HIERARCHY;
+import static org.dspace.xoai.model.oaipmh.OAIPMHError.Code.NO_RECORDS_MATCH;
+import static org.dspace.xoai.model.oaipmh.OAIPMHError.Code.NO_SET_HIERARCHY;
 import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.CoreMatchers.equalTo;
 
@@ -64,7 +65,7 @@ public class ListSetsParser {
 
     @SuppressWarnings("unchecked")
 	private Set parseSet() throws XmlReaderException {
-        Set set = new Set();
+        SetBuilder set = SetBuilder.aSet();
         
         String setName = null;
         String setSpec = null;
@@ -85,7 +86,7 @@ public class ListSetsParser {
         }
         set.withName(setName);
         set.withSpec(setSpec);
-        return set;
+        return set.build();
     }
 
 

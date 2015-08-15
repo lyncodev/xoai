@@ -22,8 +22,8 @@ import java.io.InputStream;
 
 import static com.lyncode.xml.matchers.QNameMatchers.localPart;
 import static com.lyncode.xml.matchers.XmlEventMatchers.elementName;
-import static org.dspace.xoai.model.oaipmh.Error.Code.CANNOT_DISSEMINATE_FORMAT;
-import static org.dspace.xoai.model.oaipmh.Error.Code.ID_DOES_NOT_EXIST;
+import static org.dspace.xoai.model.oaipmh.OAIPMHError.Code.CANNOT_DISSEMINATE_FORMAT;
+import static org.dspace.xoai.model.oaipmh.OAIPMHError.Code.ID_DOES_NOT_EXIST;
 import static org.hamcrest.CoreMatchers.equalTo;
 
 public class GetRecordParser {

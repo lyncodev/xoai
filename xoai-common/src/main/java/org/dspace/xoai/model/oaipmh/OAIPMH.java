@@ -8,89 +8,57 @@
 
 package org.dspace.xoai.model.oaipmh;
 
-import com.lyncode.xml.exceptions.XmlWriteException;
-import org.dspace.xoai.xml.XSISchema;
-import org.dspace.xoai.xml.XmlWritable;
-import org.dspace.xoai.xml.XmlWriter;
+import com.google.common.base.Optional;
 
-import javax.xml.stream.XMLStreamException;
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 
 
-public class OAIPMH implements XmlWritable {
-    public static final String NAMESPACE_URI = "http://www.openarchives.org/OAI/2.0/";
-    public static final String SCHEMA_LOCATION = "http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd";
+public class OAIPMH {
+    private final Date responseDate;
+    private final Request request;
+    private final OAIPMHContent content;
 
-    private Date responseDate = new Date();
-    private List<Error> errors = new ArrayList<Error>();
-    private Request request;
-    private Verb verb;
+    public OAIPMH(Date responseDate, Request request, OAIPMHContent content) {
+        this.responseDate = responseDate;
+        this.request = request;
+        this.content = content;
+    }
 
     public Date getResponseDate() {
         return responseDate;
     }
-
     public Request getRequest() {
         return request;
     }
 
-    public OAIPMH withResponseDate(Date responseDate) {
-        this.responseDate = responseDate;
-        return this;
+    public OAIPMHContent getContent() {
+        return content;
     }
-
-    public OAIPMH withRequest(Request request) {
-        this.request = request;
-        return this;
-    }
-
-    public List<Error> getErrors() {
-        return errors;
-    }
-
-    public OAIPMH withError(Error error) {
-        this.errors.add(error);
-        return this;
-    }
-
-    public boolean hasErrors () {
-        return !this.errors.isEmpty();
-    }
-
-    public Verb getVerb() {
-        return verb;
-    }
-
-    public OAIPMH withVerb(Verb verb) {
-        this.verb = verb;
-        return this;
-    }
-
-    @Override
-    public void write(XmlWriter writer) throws XmlWriteException {
-        try {
-            writer.writeStartElement("OAI-PMH");
-            writer.writeDefaultNamespace(NAMESPACE_URI);
-            writer.writeNamespace(XSISchema.PREFIX, XSISchema.NAMESPACE_URI);
-            writer.writeAttribute(XSISchema.PREFIX, XSISchema.NAMESPACE_URI, "schemaLocation",
-                    NAMESPACE_URI + " " + SCHEMA_LOCATION);
-
-            writer.writeElement("responseDate", this.responseDate, Granularity.Second);
-            writer.writeElement("request", request);
-
-            if (!errors.isEmpty()) {
-                for (Error error : errors)
-                    writer.writeElement("error", error);
-            } else {
-                if (verb == null) throw new XmlWriteException("An error or a valid response must be set");
-                writer.writeElement(verb.getType().displayName(), verb);
-            }
-
-            writer.writeEndElement();
-        } catch (XMLStreamException e) {
-            throw new XmlWriteException(e);
-        }
-    }
+    //
+//    @Override
+//    public void write(XmlDataProviderWriter writer) throws XmlWriteException {
+//        try {
+//            writer.writeStartElement("OAI-PMH");
+//            writer.writeDefaultNamespace(NAMESPACE_URI);
+//            writer.writeNamespace(XSISchema.PREFIX, XSISchema.NAMESPACE_URI);
+//            writer.writeAttribute(XSISchema.PREFIX, XSISchema.NAMESPACE_URI, "schemaLocation",
+//                    NAMESPACE_URI + " " + SCHEMA_LOCATION);
+//
+//            writer.writeElement("responseDate", this.responseDate, Granularity.Second);
+//            writer.writeElement("request", request);
+//
+//            if (!errors.isEmpty()) {
+//                for (Error error : errors)
+//                    writer.writeElement("error", error);
+//            } else {
+//                if (verb == null) throw new XmlWriteException("An error or a valid response must be set");
+//                writer.writeElement(verb.getType().displayName(), verb);
+//            }
+//
+//            writer.writeEndElement();
+//        } catch (XMLStreamException e) {
+//            throw new XmlWriteException(e);
+//        }
+//    }
 }

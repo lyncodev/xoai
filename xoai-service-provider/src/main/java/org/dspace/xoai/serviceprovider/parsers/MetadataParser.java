@@ -26,35 +26,36 @@ import static org.hamcrest.core.AllOf.allOf;
 
 public class MetadataParser {
     public XOAIMetadata parse(InputStream input) throws XmlReaderException {
-        XOAIMetadata metadata = new XOAIMetadata();
-        XmlReader reader = new XmlReader(input);
-        reader.next(elementName(localPart(equalTo("metadata"))));
-
-        while (reader.next(theEndOfDocument(), anEndElement(), startElement()).current(startElement())) {
-            metadata.withElement(parseElement(reader));
-        }
-
-        return metadata;
+//        XOAIMetadata metadata = new XOAIMetadata();
+//        XmlReader reader = new XmlReader(input);
+//        reader.next(elementName(localPart(equalTo("metadata"))));
+//
+//        while (reader.next(theEndOfDocument(), anEndElement(), startElement()).current(startElement())) {
+//            metadata.withElement(parseElement(reader));
+//        }
+//
+//        return metadata;
+        return null;
     }
 
     private Element parseElement(XmlReader reader) throws XmlReaderException {
-        Element element = new Element(reader.getAttributeValue(name()));
-        while (reader.next(startElement(), startField(), endOfMetadata()).current(startElement())) {
-            element.withElement(parseElement(reader));
-        }
+//        Element element = new Element(reader.getAttributeValue(name()));
+//        while (reader.next(startElement(), startField(), endOfMetadata()).current(startElement())) {
+//            element.withElement(parseElement(reader));
+//        }
+//
+//        while (reader.current(startField())) {
+//            Field field = new Field()
+//                    .withName(reader.getAttributeValue(name()));
+//
+//            if (reader.next(anEndElement(), text()).current(text()))
+//                field.withValue(reader.getText());
+//
+//            element.withField(field);
+//            reader.next(startField(), endElement());
+//        }
 
-        while (reader.current(startField())) {
-            Field field = new Field()
-                    .withName(reader.getAttributeValue(name()));
-
-            if (reader.next(anEndElement(), text()).current(text()))
-                field.withValue(reader.getText());
-
-            element.withField(field);
-            reader.next(startField(), endElement());
-        }
-
-        return element;
+        return null;
     }
 
     private Matcher<XMLEvent> startField() {

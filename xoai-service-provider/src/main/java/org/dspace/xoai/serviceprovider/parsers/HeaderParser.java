@@ -11,6 +11,7 @@ package org.dspace.xoai.serviceprovider.parsers;
 import com.lyncode.xml.XmlReader;
 import com.lyncode.xml.exceptions.XmlReaderException;
 import org.dspace.xoai.model.oaipmh.Header;
+import org.dspace.xoai.model.oaipmh.builder.HeaderBuilder;
 import org.hamcrest.Matcher;
 
 import javax.xml.stream.events.XMLEvent;
@@ -25,16 +26,17 @@ import static org.hamcrest.core.AllOf.allOf;
 
 public class HeaderParser {
     public Header parse (XmlReader reader) throws XmlReaderException {
-        Header header = new Header();
+        HeaderBuilder headerBuilder = HeaderBuilder.aHeader();
         if (reader.hasAttribute(attributeName(localPart(equalTo("status")))))
-            header.withStatus(DELETED);
+            headerBuilder.withStatus(DELETED);
         reader.next(elementName(localPart(equalTo("identifier")))).next(text());
-        header.withIdentifier(reader.getText());
+        headerBuilder.withIdentifier(reader.getText());
         reader.next(elementName(localPart(equalTo("datestamp")))).next(text());
-        header.withDatestamp(reader.get(dateParser()));
+        headerBuilder.withDatestamp(reader.get(dateParser()));
         while (reader.next(endOfHeader(), setSpecElement()).current(setSpecElement()))
-            header.withSetSpec(reader.next(text()).getText());
-        return header;
+            headerBuilder.withSetSpec(reader.next(text()).getText());
+
+        return headerBuilder.build();
     }
 
 

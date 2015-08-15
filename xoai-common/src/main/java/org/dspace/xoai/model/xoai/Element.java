@@ -15,6 +15,7 @@
 
 package org.dspace.xoai.model.xoai;
 
+import com.google.common.base.Optional;
 import com.lyncode.xml.XmlReader;
 import com.lyncode.xml.XmlWritable;
 import com.lyncode.xml.XmlWriter;
@@ -39,60 +40,44 @@ public class Element implements XmlWritable {
         if (!reader.hasAttribute(attributeName(localPart(equalTo("name")))))
             throw new XmlReaderException("Invalid XML. Element entities must have a name");
 
-        Element element = new Element(reader.getAttributeValue(localPart(equalTo("name"))));
+//        Element element = new Element(reader.getAttributeValue(localPart(equalTo("name"))));
 
 
-        while (reader.next(anElement()).current(aStartElement())) {
-            if (reader.current(elementName(localPart(equalTo("element"))))) // Nested element
-                element.withElement(parse(reader));
-            else if (reader.current(elementName(localPart(equalTo("field")))))
-                element.withField(Field.parse(reader));
-            else throw new XmlReaderException("Unexpected element");
-        }
-
-        if (!reader.current(allOf(anEndElement(), elementName(localPart(equalTo("element"))))))
-            throw new XmlReaderException("Invalid XML. Expecting end of entity 'element'");
-
-        return element;
+//        while (reader.next(anElement()).current(aStartElement())) {
+//            if (reader.current(elementName(localPart(equalTo("element"))))) // Nested element
+//                element.withElement(parse(reader));
+//            else if (reader.current(elementName(localPart(equalTo("field")))))
+//                element.withField(Field.parse(reader));
+//            else throw new XmlReaderException("Unexpected element");
+//        }
+//
+//        if (!reader.current(allOf(anEndElement(), elementName(localPart(equalTo("element"))))))
+//            throw new XmlReaderException("Invalid XML. Expecting end of entity 'element'");
+//
+//        return element;
+        return null;
     }
 
-    protected List<Field> fields = new ArrayList<Field>();
-    protected String name;
-    protected List<Element> elements = new ArrayList<Element>();
+    private final String name;
+    private final List<Field> fields;
+    private final List<Element> elements;
 
-    public Element(String name) {
+    public Element(String name, List<Field> fields, List<Element> elements) {
         this.name = name;
-    }
-
-    public List<Field> getFields() {
-        return fields;
+        this.fields = fields;
+        this.elements = elements;
     }
 
     public String getName() {
         return name;
     }
 
-    public Element withName(String value) {
-        this.name = value;
-        return this;
-    }
-
-    public Element withField (Field field) {
-        this.fields.add(field);
-        return this;
-    }
-    public Element withField (String name, String value) {
-        this.fields.add(new Field(value, name));
-        return this;
+    public List<Field> getFields() {
+        return fields;
     }
 
     public List<Element> getElements() {
-        return this.elements;
-    }
-
-    public Element withElement(Element element) {
-        this.elements.add(element);
-        return this;
+        return elements;
     }
 
     @Override

@@ -8,6 +8,7 @@
 
 package org.dspace.xoai.model.xoai;
 
+import com.google.common.base.Optional;
 import com.lyncode.xml.XmlReader;
 import com.lyncode.xml.XmlWritable;
 import com.lyncode.xml.XmlWriter;
@@ -27,56 +28,44 @@ public class Field implements XmlWritable {
         if (!reader.current(allOf(aStartElement(), elementName(localPart(equalTo("field"))))))
             throw new XmlReaderException("Invalid XML. Expecting entity 'field'");
 
-        Field field = new Field();
+//        Field field = new Field();
 
         if (reader.hasAttribute(attributeName(localPart(equalTo("name")))))
-            field.withName(reader.getAttributeValue(localPart(equalTo("name"))));
+//            field.withName(reader.getAttributeValue(localPart(equalTo("name"))));
 
         if (reader.next(anElement(), text()).current(text())) {
-            field.withValue(reader.getText());
+//            field.withValue(reader.getText());
             reader.next(anElement());
         }
 
         if (!reader.current(allOf(anEndElement(), elementName(localPart(equalTo("field"))))))
             throw new XmlReaderException("Invalid XML. Expecting end of entity 'field'");
 
-        return field;
+        return null;
     }
 
-    public Field() {
-    }
 
-    public Field(String value, String name) {
-        this.value = value;
+    private final Optional<String> name;
+    private final String value;
+
+    public Field(Optional<String> name, String value) {
         this.name = name;
+        this.value = value;
     }
 
-    protected String value;
-    protected String name;
+    public Optional<String> getName() {
+        return name;
+    }
 
     public String getValue() {
         return value;
     }
 
-    public Field withValue(String value) {
-        this.value = value;
-        return this;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public Field withName(String value) {
-        this.name = value;
-        return this;
-    }
-
     @Override
     public void write(XmlWriter writer) throws XmlWriteException {
         try {
-            if (this.name != null)
-                writer.writeAttribute("name", this.getName());
+//            if (this.name != null)
+//                writer.writeAttribute("name", this.getName());
 
             if (this.value != null)
                 writer.writeCharacters(value);

@@ -11,8 +11,10 @@ package org.dspace.xoai.serviceprovider.parsers;
 import com.lyncode.xml.XmlReader;
 import com.lyncode.xml.exceptions.XmlReaderException;
 import org.dspace.xoai.model.oaipmh.About;
+import org.dspace.xoai.model.oaipmh.Header;
 import org.dspace.xoai.model.oaipmh.Metadata;
 import org.dspace.xoai.model.oaipmh.Record;
+import org.dspace.xoai.model.oaipmh.builder.RecordBuilder;
 import org.dspace.xoai.serviceprovider.exceptions.InternalHarvestException;
 import org.dspace.xoai.serviceprovider.model.Context;
 import org.dspace.xoai.xml.XSLPipeline;
@@ -40,11 +42,9 @@ public class RecordParser {
         HeaderParser headerParser = new HeaderParser();
 
         reader.next(elementName(localPart(equalTo("header"))));
-        Record record = new Record()
-                .withHeader(headerParser.parse(reader));
-
-
-        if (!record.getHeader().isDeleted()) {
+        Header header = headerParser.parse(reader);
+        RecordBuilder record = RecordBuilder.aRecord().withHeader(header);
+        if (!header.isDeleted()) {
             reader.next(elementName(localPart(equalTo("metadata")))).next(aStartElement());
             String content = reader.retrieveCurrentAsString();
             ByteArrayInputStream inputStream = new ByteArrayInputStream(content.getBytes());
@@ -52,11 +52,11 @@ public class RecordParser {
                     .apply(context.getMetadataTransformer(metadataPrefix));
             if (context.hasTransformer())
                 pipeline.apply(context.getTransformer());
-            try {
-                record.withMetadata(new Metadata(new MetadataParser().parse(pipeline.process())));
-            } catch (TransformerException e) {
-                throw new InternalHarvestException("Unable to process transformer");
-            }
+//            try {
+//                record.withMetadata(new Metadata(new MetadataParser().parse(pipeline.process())));
+//            } catch (TransformerException e) {
+//                throw new InternalHarvestException("Unable to process transformer");
+//            }
         }
 
         if (reader.next(aboutElement(), endOfRecord()).current(aboutElement())) {
@@ -64,7 +64,7 @@ public class RecordParser {
             record.withAbout(new About(reader.retrieveCurrentAsString()));
         }
 
-        return record;
+        return record.build();
     }
 
     private Matcher<XMLEvent> endOfRecord() {

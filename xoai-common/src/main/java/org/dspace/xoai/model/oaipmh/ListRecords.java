@@ -8,45 +8,24 @@
 
 package org.dspace.xoai.model.oaipmh;
 
-import com.lyncode.xml.exceptions.XmlWriteException;
-import org.dspace.xoai.xml.XmlWriter;
+import com.google.common.base.Optional;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListRecords implements Verb {
+public class ListRecords implements OAIPMHContent {
+    private final List<Record> records;
+    private final Optional<ResumptionToken> resumptionToken;
 
-    protected List<Record> records = new ArrayList<Record>();
-    protected ResumptionToken resumptionToken;
+    public ListRecords(List<Record> records, Optional<ResumptionToken> resumptionToken) {
+        this.records = records;
+        this.resumptionToken = resumptionToken;
+    }
 
     public List<Record> getRecords() {
-        return this.records;
+        return records;
     }
-
-    public ResumptionToken getResumptionToken() {
+    public Optional<ResumptionToken> getResumptionToken() {
         return resumptionToken;
-    }
-
-    public ListRecords withResumptionToken(ResumptionToken value) {
-        this.resumptionToken = value;
-        return this;
-    }
-
-    public ListRecords withRecord(Record record) {
-        this.records.add(record);
-        return this;
-    }
-
-    @Override
-    public void write(XmlWriter writer) throws XmlWriteException {
-        if (!this.records.isEmpty())
-            for (Record record : this.records)
-                writer.writeElement("record", record);
-        writer.writeElement("resumptionToken", resumptionToken);
-    }
-
-    @Override
-    public Type getType() {
-        return Type.ListRecords;
     }
 }

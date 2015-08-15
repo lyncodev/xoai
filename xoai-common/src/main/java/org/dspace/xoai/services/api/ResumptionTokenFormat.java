@@ -12,6 +12,6 @@ import org.dspace.xoai.exceptions.InvalidResumptionTokenException;
 import org.dspace.xoai.model.oaipmh.ResumptionToken;
 
 public interface ResumptionTokenFormat {
-    String format (ResumptionToken.Value value);
-    ResumptionToken.Value parse (String value) throws InvalidResumptionTokenException;
+//    String format (ResumptionToken.Value value);
+//    ResumptionToken.Value parse (String value) throws InvalidResumptionTokenException;
 }

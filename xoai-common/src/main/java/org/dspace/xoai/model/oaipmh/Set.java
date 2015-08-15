@@ -15,54 +15,26 @@
 
 package org.dspace.xoai.model.oaipmh;
 
-import com.lyncode.xml.exceptions.XmlWriteException;
-import org.dspace.xoai.model.xoai.XOAIMetadata;
-import org.dspace.xoai.xml.XmlWritable;
-import org.dspace.xoai.xml.XmlWriter;
-
-import java.util.ArrayList;
 import java.util.List;
 
-public class Set implements XmlWritable {
+public class Set {
+    private final String spec;
+    private final String name;
+    private final List<Description> descriptions;
 
-    private String spec;
-    private String name;
-    private List<Description> descriptions = new ArrayList<Description>();
+    public Set(String spec, String name, List<Description> descriptions) {
+        this.spec = spec;
+        this.name = name;
+        this.descriptions = descriptions;
+    }
 
     public String getSpec() {
         return spec;
     }
-
-    public Set withSpec(String value) {
-        this.spec = value;
-        return this;
-    }
-
     public String getName() {
         return name;
     }
-
-    public Set withName(String value) {
-        this.name = value;
-        return this;
-    }
-
     public List<Description> getDescriptions() {
         return this.descriptions;
-    }
-
-    public Set withDescription(XOAIMetadata description) {
-        this.descriptions.add(new Description(description));
-        return this;
-    }
-
-    @Override
-    public void write(XmlWriter writer) throws XmlWriteException {
-        writer.writeElement("setSpec", spec);
-        writer.writeElement("setName", name);
-        if (this.descriptions != null && !this.descriptions.isEmpty()) {
-            for (Description desc : this.descriptions)
-                writer.writeElement("setDescription", desc);
-        }
     }
 }
